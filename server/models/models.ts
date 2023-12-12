@@ -19,7 +19,7 @@ class Sales extends Model {
 
 Products.init(
     {
-        id: {
+        productID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
@@ -33,10 +33,10 @@ Products.init(
         description: {
             type: DataTypes.STRING,
         },
-        priseUsd: {
+        priceUsd: {
             type: DataTypes.FLOAT,
         },
-        priseRub: {
+        priceRub: {
             type: DataTypes.FLOAT,
         },
         quantityInStock: {
@@ -51,7 +51,7 @@ Products.init(
 
 Sales.init(
     {
-        id: {
+        salesId: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
@@ -69,7 +69,8 @@ Sales.init(
     },
 );
 
-Products.hasMany(Sales, { foreignKey: 'productID' });
-Sales.belongsTo(Products , { foreignKey: 'productID' });
+Products.hasMany(Sales, { foreignKey: "productID" });
+Sales.belongsTo(Products, { foreignKey: "productID" });
 
-export default { Products, Sales };
+const models = { Products, Sales };
+export default models;
