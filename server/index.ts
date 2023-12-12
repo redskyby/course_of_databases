@@ -23,7 +23,6 @@ const start = async () => {
         await sequelize.sync();
         app.listen(port, () => {
             console.log(`Server running at http://localhost:${port}`);
-            console.log();
         });
     } catch (e) {
         console.log(e);

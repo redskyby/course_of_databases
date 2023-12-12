@@ -2,7 +2,7 @@ import sequelize from "../db_sequelize";
 import { Model, DataTypes } from "sequelize";
 
 class Products extends Model {
-    public id!: number;
+    public productId!: number;
     public type!: string;
     public brand!: string;
     public description!: string;
@@ -12,14 +12,18 @@ class Products extends Model {
 }
 
 class Sales extends Model {
-    public id!: number;
-    public seller!: string;
+    public salesId!: number;
     public saleDate!: Date;
+}
+
+
+class Seller extends Model{
+    public sellerId!: number;
 }
 
 Products.init(
     {
-        productID: {
+        productId: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
@@ -49,15 +53,13 @@ Products.init(
     },
 );
 
+
 Sales.init(
     {
         salesId: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
-        },
-        seller: {
-            type: DataTypes.STRING,
         },
         saleDate: {
             type: DataTypes.DATE,
@@ -69,8 +71,25 @@ Sales.init(
     },
 );
 
-Products.hasMany(Sales, { foreignKey: "productID" });
-Sales.belongsTo(Products, { foreignKey: "productID" });
+Seller.init(
+    {
+        sellerId: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        }
+    }, {
+        sequelize,
+        modelName: "seller",
+    }
+)
 
-const models = { Products, Sales };
+Seller.hasMany(Sales , {onDelete: "CASCADE"});
+Sales.belongsTo(Seller);
+
+Sales.belongsToMany(Products , { through: "SaleProducts", foreignKey: 'salesId'});
+Products.belongsTo(Sales , { foreignKey: 'salesId'});
+
+
+const models = { Products, Sales , Seller };
 export default models;
